@@ -1,0 +1,14 @@
+#!/usr/bin/expect -f
+
+set smbworkgroup [lindex $argv 0]
+set server_to_join [lindex $argv 1]
+set netbios_name [lindex $argv 2]
+set user_join [lindex $argv 3]
+set password_join [lindex $argv 4]
+
+set timeout -1
+spawn /usr/bin/net join -w $smbworkgroup -S $server_to_join -U $user_join -n $netbios_name
+match_max 100000
+expect -exact "Enter administrator's password:"
+send -- "${password_join}\r"
+expect eof
